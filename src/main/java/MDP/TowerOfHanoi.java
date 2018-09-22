@@ -1,3 +1,5 @@
+package MDP;
+
 public class TowerOfHanoi implements MDP{
 
     private int[][] transitionTable = new int[][]{

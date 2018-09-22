@@ -1,3 +1,7 @@
+package Algorithms;
+
+import MDP.MDP;
+
 public class ValueIteration {
 
     private double precision;
@@ -55,24 +59,4 @@ public class ValueIteration {
         return iteration;
     }
 
-
-    public static void main(String[] args) {
-        ValueIteration myVIter = new ValueIteration(0.001);
-        MDP mdp = new TowerOfHanoi();
-        int iterations = myVIter.startIteration(mdp);
-
-        System.out.println("Iterations: " + iterations);
-
-        int[] bestActions = mdp.getActions();
-        double[] bestUtilities = mdp.getUtilities();
-
-        System.out.println("Best Actions");
-        for(int i = 0; i < bestActions.length; i++){
-            System.out.println("State: " + i + " action: " + bestActions[i]);
-        }
-        System.out.println("Best Utilities");
-        for (double bestUtility : bestUtilities) {
-            System.out.println(bestUtility);
-        }
-    }
 }

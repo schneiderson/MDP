@@ -1,3 +1,6 @@
+package Algorithms;
+
+import MDP.MDP;
 import org.ejml.data.SingularMatrixException;
 import org.ejml.simple.SimpleMatrix;
 import java.util.ArrayList;
@@ -83,27 +86,5 @@ public class PolicyIteration {
         }while (changed);
 
         return iteration;
-    }
-
-
-
-    public static void main(String[] args){
-        PolicyIteration polIt = new PolicyIteration();
-        MDP mdp = new TowerOfHanoi();
-        int iterations = polIt.startIteration(mdp);
-
-        System.out.println("Iterations: " + iterations);
-
-        int[] bestActions = mdp.getActions();
-        double[] bestUtilities = mdp.getUtilities();
-
-        System.out.println("Best Actions");
-        for(int i = 0; i < bestActions.length; i++){
-            System.out.println("State: " + i + " action: " + bestActions[i]);
-        }
-        System.out.println("Utilities");
-        for (double bestUtility : bestUtilities) {
-            System.out.println(bestUtility);
-        }
     }
 }
