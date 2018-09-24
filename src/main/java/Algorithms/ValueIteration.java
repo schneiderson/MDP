@@ -2,9 +2,12 @@ package Algorithms;
 
 import MDP.MDP;
 
+import java.util.ArrayList;
+
 public class ValueIteration {
 
     private double precision;
+    public ArrayList<double[]> utilities = new ArrayList<double[]>();
 
     public ValueIteration(double precision) {
         if (precision <= 0) {
@@ -37,6 +40,7 @@ public class ValueIteration {
                     mdp.setUtility(state, max);
                 }
             }
+            utilities.add(iteration, mdp.getUtilities().clone());
             iteration++;
         } while (dirac > precision);
 
@@ -59,4 +63,7 @@ public class ValueIteration {
         return iteration;
     }
 
+    public ArrayList<double[]> getUtilities() {
+        return utilities;
+    }
 }

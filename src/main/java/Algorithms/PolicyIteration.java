@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 public class PolicyIteration {
 
+    public ArrayList<double[]> utilities = new ArrayList<double[]>();
+
     public int startIteration(MDP mdp){
         mdp.initRandomPolicy();
 
@@ -45,25 +47,15 @@ public class PolicyIteration {
 
             }
 
-            System.out.println("Weights");
-            System.out.println(utilityWeights);
-            System.out.println("Rewards");
-            System.out.println(rewards);
-
-            SimpleMatrix utilities;
+            SimpleMatrix utilityMat;
             try {
-                utilities = utilityWeights.solve(rewards);
+                utilityMat = utilityWeights.solve(rewards);
             } catch ( SingularMatrixException e ) {
                 throw new IllegalArgumentException("Singular matrix");
             }
 
-
-            System.out.println("utilities");
-            System.out.println(utilities);
-
-
             for (int s = 0; s < mdp.numberOfStates(); s++) {
-                mdp.setUtility(s, utilities.get(s,0));
+                mdp.setUtility(s, utilityMat.get(s,0));
             }
 
             // check for action yielding higher utility
@@ -92,10 +84,16 @@ public class PolicyIteration {
                     }
                 }
             }
+            utilities.add(iteration, mdp.getUtilities().clone());
             iteration++;
 
         }while (changed);
 
         return iteration;
+    }
+
+
+    public ArrayList<double[]> getUtilities() {
+        return utilities;
     }
 }
