@@ -22,19 +22,19 @@ public class PolicyIteration {
 
                 if (s != 4) { // skip terminal state
                     int action = mdp.getAction(s);
-                    int reward = mdp.getReward(s, action);
+                    double reward = (1 - mdp.getMistakeRate()) * mdp.getReward(s, action) +
+                            (mdp.getMistakeRate() * mdp.getReward(s, mdp.getMistakeAction(s, action)));
                     rewards.set(s, 0, reward);
 
                     // correct action
                     int s_p = mdp.getTransition(s, action);
                     if(s_p > 0){
-                        double factor = action == mdp.getAction(s) ? 1 - mdp.getMistakeRate() : mdp.getMistakeRate();
                         double utilityWeight = mdp.getDiscountRate() * (1 - mdp.getMistakeRate()) * -1;
                         utilityWeights.set(s, s_p - 1, utilityWeight);
                     }
 
                     // mistake action
-                    int s_pp = mdp.getTransition(s, action);
+                    int s_pp = mdp.getTransition(s, mdp.getMistakeAction(s, action));
                     if(s_pp > 0){
                         double utilityWeight = mdp.getDiscountRate() * mdp.getMistakeRate() * -1;
                         utilityWeights.set(s, s_pp - 1, utilityWeight);
@@ -42,7 +42,13 @@ public class PolicyIteration {
 
                 }
                 utilityWeights.set(s, s, 1.0);
+
             }
+
+            System.out.println("Weights");
+            System.out.println(utilityWeights);
+            System.out.println("Rewards");
+            System.out.println(rewards);
 
             SimpleMatrix utilities;
             try {
@@ -50,6 +56,11 @@ public class PolicyIteration {
             } catch ( SingularMatrixException e ) {
                 throw new IllegalArgumentException("Singular matrix");
             }
+
+
+            System.out.println("utilities");
+            System.out.println(utilities);
+
 
             for (int s = 0; s < mdp.numberOfStates(); s++) {
                 mdp.setUtility(s, utilities.get(s,0));
