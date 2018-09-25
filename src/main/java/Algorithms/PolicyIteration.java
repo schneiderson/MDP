@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class PolicyIteration {
 
     public ArrayList<double[]> utilities = new ArrayList<double[]>();
+    public ArrayList<int[]> actions = new ArrayList<int[]>();
 
     public int startIteration(MDP mdp){
         mdp.initRandomPolicy();
@@ -85,6 +86,7 @@ public class PolicyIteration {
                 }
             }
             utilities.add(iteration, mdp.getUtilities().clone());
+            actions.add(iteration, mdp.getActions().clone());
             iteration++;
 
         }while (changed);

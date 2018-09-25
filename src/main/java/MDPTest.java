@@ -18,6 +18,7 @@ public class MDPTest {
         int[] bestActionsVI = mdp.getActions();
         double[] bestUtilitiesVI = mdp.getUtilities();
         ArrayList<double[]> allUtilitiesVI = myVIter.getUtilities();
+        ArrayList<int[]> allActionsVI = myVIter.actions;
 
 
         /* POLICY ITERATION */
@@ -28,7 +29,8 @@ public class MDPTest {
 
         int[] bestActionsPI = mdp.getActions();
         double[] bestUtilitiesPI = mdp.getUtilities();
-        ArrayList<double[]> allUtilitiesPI = myVIter.getUtilities();
+        ArrayList<double[]> allUtilitiesPI = polIt.getUtilities();
+        ArrayList<int[]> allActionsPI = polIt.actions;
 
 
 
@@ -39,7 +41,7 @@ public class MDPTest {
         for(int i = 0; i < allUtilitiesVI.size(); i++){
             System.out.println("\n - Utilities Iteration " + i);
             for(int j = 0; j < allUtilitiesVI.get(i).length; j++){
-            	System.out.println("State: " + j + "\t action: " + bestActionsVI[j] + "\t utility: " + allUtilitiesVI.get(i)[j] );
+            	System.out.println("State: " + j + "\t action: " + allActionsVI.get(i)[j] + "\t utility: " + allUtilitiesVI.get(i)[j] );
             }
         }
 
@@ -47,7 +49,7 @@ public class MDPTest {
         for(int i = 0; i < allUtilitiesPI.size(); i++){
             System.out.println("\n - Utilities Iteration " + i);
             for(int j = 0; j < allUtilitiesPI.get(i).length; j++){
-                System.out.println("State " + j + ": " + allUtilitiesPI.get(i)[j]);
+                System.out.println("State: " + j + "\t action: " + allActionsPI.get(i)[j] + "\t utility: " + + allUtilitiesPI.get(i)[j]);
             }
         }
 
