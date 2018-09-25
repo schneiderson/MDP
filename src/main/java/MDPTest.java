@@ -39,7 +39,7 @@ public class MDPTest {
         for(int i = 0; i < allUtilitiesVI.size(); i++){
             System.out.println("\n - Utilities Iteration " + i);
             for(int j = 0; j < allUtilitiesVI.get(i).length; j++){
-                System.out.println("State " + j + ": " + allUtilitiesVI.get(i)[j]);
+            	System.out.println("State: " + j + "\t action: " + bestActionsVI[j] + "\t utility: " + allUtilitiesVI.get(i)[j] );
             }
         }
 
