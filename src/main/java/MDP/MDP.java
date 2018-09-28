@@ -3,6 +3,9 @@ package MDP;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Markov Decision Process Interface
+ */
 public interface MDP {
 
     /* Getter */
@@ -30,6 +33,7 @@ public interface MDP {
     void setUtility(int state, double utility);
 
     void setAction(int state, int action);
+
 
     /* Default Methods */
 

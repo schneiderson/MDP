@@ -17,47 +17,7 @@ public class PolicyIteration {
         int iteration = 0;
 
         do{
-            // calculate utility values of all states given policy
-            SimpleMatrix rewards = new SimpleMatrix(mdp.numberOfStates(), 1);
-            SimpleMatrix utilityWeights = new SimpleMatrix(mdp.numberOfStates(), mdp.numberOfStates());
-
-            for(int s = 0; s < mdp.numberOfStates(); s++) {
-
-                if (s != 4) { // skip terminal state
-                    int action = mdp.getAction(s);
-                    double reward = (1 - mdp.getMistakeRate()) * mdp.getReward(s, action) +
-                            (mdp.getMistakeRate() * mdp.getReward(s, mdp.getMistakeAction(s, action)));
-                    rewards.set(s, 0, reward);
-
-                    // correct action
-                    int s_p = mdp.getTransition(s, action);
-                    if(s_p > 0){
-                        double utilityWeight = mdp.getDiscountRate() * (1 - mdp.getMistakeRate()) * -1;
-                        utilityWeights.set(s, s_p - 1, utilityWeight);
-                    }
-
-                    // mistake action
-                    int s_pp = mdp.getTransition(s, mdp.getMistakeAction(s, action));
-                    if(s_pp > 0){
-                        double utilityWeight = mdp.getDiscountRate() * mdp.getMistakeRate() * -1;
-                        utilityWeights.set(s, s_pp - 1, utilityWeight);
-                    }
-
-                }
-                utilityWeights.set(s, s, 1.0);
-
-            }
-
-            SimpleMatrix utilityMat;
-            try {
-                utilityMat = utilityWeights.solve(rewards);
-            } catch ( SingularMatrixException e ) {
-                throw new IllegalArgumentException("Singular matrix");
-            }
-
-            for (int s = 0; s < mdp.numberOfStates(); s++) {
-                mdp.setUtility(s, utilityMat.get(s,0));
-            }
+            evaluatePolicy(mdp);
 
             // check for action yielding higher utility
             changed = false;
@@ -92,6 +52,52 @@ public class PolicyIteration {
         }while (changed);
 
         return iteration;
+    }
+
+
+
+    public void evaluatePolicy(MDP mdp){
+        // calculate utility values of all states given policy
+        SimpleMatrix rewards = new SimpleMatrix(mdp.numberOfStates(), 1);
+        SimpleMatrix utilityWeights = new SimpleMatrix(mdp.numberOfStates(), mdp.numberOfStates());
+
+        for(int s = 0; s < mdp.numberOfStates(); s++) {
+
+            if (s != 4) { // skip terminal state
+                int action = mdp.getAction(s);
+                double reward = (1 - mdp.getMistakeRate()) * mdp.getReward(s, action) +
+                        (mdp.getMistakeRate() * mdp.getReward(s, mdp.getMistakeAction(s, action)));
+                rewards.set(s, 0, reward);
+
+                // correct action
+                int s_p = mdp.getTransition(s, action);
+                if(s_p > 0){
+                    double utilityWeight = mdp.getDiscountRate() * (1 - mdp.getMistakeRate()) * -1;
+                    utilityWeights.set(s, s_p - 1, utilityWeight);
+                }
+
+                // mistake action
+                int s_pp = mdp.getTransition(s, mdp.getMistakeAction(s, action));
+                if(s_pp > 0){
+                    double utilityWeight = mdp.getDiscountRate() * mdp.getMistakeRate() * -1;
+                    utilityWeights.set(s, s_pp - 1, utilityWeight);
+                }
+
+            }
+            utilityWeights.set(s, s, 1.0);
+
+        }
+
+        SimpleMatrix utilityMat;
+        try {
+            utilityMat = utilityWeights.solve(rewards);
+        } catch ( SingularMatrixException e ) {
+            throw new IllegalArgumentException("Singular matrix");
+        }
+
+        for (int s = 0; s < mdp.numberOfStates(); s++) {
+            mdp.setUtility(s, utilityMat.get(s,0));
+        }
     }
 
 

@@ -63,22 +63,6 @@ public class ValueIteration {
             iteration++;
         } while (dirac > precision);
 
-        /*for (int state = 0; state < 12; state++) {
-            int bestAction = -1;
-            max = -Double.MAX_VALUE;
-            for (int action = 0; action < 6; action++) {
-                if (mdp.getTransition(state, action) != 0) // valid action in the current state
-                {
-                    newValue = mdp.calcUtility(state, action);
-                    if (newValue > max) {
-                        max = newValue;
-                        bestAction = action;
-                    }
-                }
-            }
-            mdp.setAction(state, bestAction);
-        }*/
-
         return iteration;
     }
 
